@@ -1,0 +1,27 @@
+{
+  "name": "blog",
+  "version": "0.0.1",
+  "description": "Creating a blog to study authentication, job hierarchy, table relationships and API",
+  "keywords": [
+    "API",
+    "Express",
+    "Node",
+    "MySql",
+    "Sequelize"
+  ],
+  "license": "ISC",
+  "author": "Douglas",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.22.5",
+    "sequelize": "^6.37.8",
+    "zod": "^4.4.3"
+  }
+}
