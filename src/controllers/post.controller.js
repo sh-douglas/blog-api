@@ -30,6 +30,16 @@ class PostController {
       next(error);
     }
   }
+
+  async findUnpublishedPosts(req, res, next) {
+    try {
+      const posts = await PostService.findUnpublishedPosts(req.user);
+
+      return res.status(200).json(posts);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new PostController();

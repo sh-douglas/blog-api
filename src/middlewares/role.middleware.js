@@ -11,6 +11,12 @@ function checkRoleMiddleware(allowedRoles) {
         next(new AppError("Forbidden", 403));
         return;
       }
+
+      req.user = {
+        id: userData.id,
+        role: userData.role,
+      };
+
       return next();
     } catch (error) {
       next(error);

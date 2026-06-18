@@ -55,6 +55,28 @@ class PostService {
       updatedAt: post.updatedAt,
     };
   }
+
+  async findUnpublishedPosts(currentUser) {
+    let posts;
+
+    if (currentUser.role === "director") {
+      posts = await PostRepository.findUnpublishedPosts();
+    } else if (currentUser.role === "editor") {
+      posts = await PostRepository.findUnpublishedPostsByAuthor(currentUser.id);
+    } else {
+      throw new AppError("Forbidden.", 403);
+    }
+
+    return posts.map((post) => ({
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      authorId: post.authorId,
+      published: post.published,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+    }));
+  }
 }
 
 export default new PostService();
