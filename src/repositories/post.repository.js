@@ -5,14 +5,56 @@ class PostRepository {
     return Post.create(data);
   }
 
-  async findAll() {
+  async findPublishedPosts() {
     return Post.findAll({
+      where: { published: true },
       order: [["createdAt", "DESC"]],
     });
   }
 
-  async findById(id) {
-    return Post.findByPk(id);
+  async findPublishedPostById(id) {
+    return Post.findOne({
+      where: {
+        id,
+        published: true,
+      },
+    });
+  }
+
+  async findUnpublishedPostById(id) {
+    return Post.findOne({
+      where: {
+        id,
+        published: false,
+      },
+    });
+  }
+
+  async findUnpublishedPosts() {
+    return Post.findAll({
+      where: { published: false },
+      order: [["createdAt", "DESC"]],
+    });
+  }
+
+  async findUnpublishedPostsByAuthor(authorId) {
+    return Post.findAll({
+      where: {
+        published: false,
+        authorId,
+      },
+      order: [["createdAt", "DESC"]],
+    });
+  }
+
+  async findUnpublishedPostByIdAndAuthor(id, authorId) {
+    return Post.findOne({
+      where: {
+        id,
+        published: false,
+        authorId,
+      },
+    });
   }
 }
 

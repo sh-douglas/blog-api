@@ -5,8 +5,8 @@ import checkRoleMiddleware from "../middlewares/role.middleware.js";
 
 const router = Router();
 
-router.get("/", PostController.findAll);
-router.get("/:id", PostController.findById);
+router.get("/", PostController.findPublishedPosts);
+router.get("/:id", PostController.findPublishedPostById);
 
 router.post(
   "/",

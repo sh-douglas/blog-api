@@ -11,9 +11,9 @@ class PostController {
     }
   }
 
-  async findAll(req, res, next) {
+  async findPublishedPosts(req, res, next) {
     try {
-      const posts = await PostService.findAll();
+      const posts = await PostService.findPublishedPosts();
 
       return res.status(200).json(posts);
     } catch (error) {
@@ -21,9 +21,9 @@ class PostController {
     }
   }
 
-  async findById(req, res, next) {
+  async findPublishedPostById(req, res, next) {
     try {
-      const post = await PostService.findById(req.params.id);
+      const post = await PostService.findPublishedPostById(req.params.id);
 
       return res.status(200).json(post);
     } catch (error) {

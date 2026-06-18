@@ -24,8 +24,8 @@ class PostService {
     };
   }
 
-  async findAll() {
-    const posts = await PostRepository.findAll();
+  async findPublishedPosts() {
+    const posts = await PostRepository.findPublishedPosts();
 
     return posts.map((post) => ({
       id: post.id,
@@ -38,8 +38,8 @@ class PostService {
     }));
   }
 
-  async findById(id) {
-    const post = await PostRepository.findById(id);
+  async findPublishedPostById(id) {
+    const post = await PostRepository.findPublishedPostById(id);
 
     if (!post) {
       throw new AppError("Post not found.", 404);
