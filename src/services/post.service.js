@@ -1,4 +1,5 @@
 import PostRepository from "../repositories/post.repository.js";
+import AppError from "../utils/AppError.js";
 import { createPostSchema } from "../validators/post.validator.js";
 
 class PostService {
@@ -20,6 +21,38 @@ class PostService {
       authorId: newPost.authorId,
       published: newPost.published,
       createdAt: newPost.createdAt,
+    };
+  }
+
+  async findAll() {
+    const posts = await PostRepository.findAll();
+
+    return posts.map((post) => ({
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      authorId: post.authorId,
+      published: post.published,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+    }));
+  }
+
+  async findById(id) {
+    const post = await PostRepository.findById(id);
+
+    if (!post) {
+      throw new AppError("Post not found.", 404);
+    }
+
+    return {
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      authorId: post.authorId,
+      published: post.published,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
     };
   }
 }

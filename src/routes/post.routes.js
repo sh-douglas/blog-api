@@ -5,6 +5,9 @@ import checkRoleMiddleware from "../middlewares/role.middleware.js";
 
 const router = Router();
 
+router.get("/", PostController.findAll);
+router.get("/:id", PostController.findById);
+
 router.post(
   "/",
   authMiddleware,
