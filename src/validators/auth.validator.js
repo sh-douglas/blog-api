@@ -19,4 +19,8 @@ const loginSchema = z.object({
   password: z.string().min(6, "The password must be 6 characters or more"),
 });
 
-export { registerSchema, loginSchema };
+const roleSchema = z.object({
+  role: z.enum(["reader", "editor", "director"]),
+});
+
+export { registerSchema, loginSchema, roleSchema };
