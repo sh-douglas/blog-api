@@ -8,6 +8,10 @@ class UserRepository {
   async findByEmail(email) {
     return User.findOne({ where: { email } });
   }
+
+  async findById(id) {
+    return User.findByPk(id);
+  }
 }
 
 export default new UserRepository();
