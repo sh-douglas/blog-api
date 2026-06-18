@@ -12,6 +12,12 @@ class UserRepository {
   async findById(id) {
     return User.findByPk(id);
   }
+
+  async updateRole(userId, role) {
+    await User.update({ role: role }, { where: { id: userId } });
+
+    return this.findById(userId);
+  }
 }
 
 export default new UserRepository();

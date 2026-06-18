@@ -10,6 +10,20 @@ class UserController {
       next(error);
     }
   }
+
+  async updateUserRole(req, res, next) {
+    try {
+      const userToUpdate = req.params.id;
+
+      const updatedUser = await UserService.updateUserRole(
+        userToUpdate,
+        req.body,
+      );
+      return res.json(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new UserController();
