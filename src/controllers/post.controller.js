@@ -53,6 +53,22 @@ class PostController {
       next(error);
     }
   }
+
+  updatePublishedStatus(published) {
+    return async function (req, res, next) {
+      try {
+        const updatedPost = await PostService.updatePublishedStatus(
+          req.params.id,
+          req.user,
+          published,
+        );
+
+        return res.status(200).json(updatedPost);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 }
 
 export default new PostController();

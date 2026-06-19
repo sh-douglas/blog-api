@@ -5,6 +5,25 @@ class PostRepository {
     return Post.create(data);
   }
 
+  async findById(id) {
+    return Post.findByPk(id);
+  }
+
+  async findByIdAndAuthor(id, authorId) {
+    return Post.findOne({
+      where: {
+        id,
+        authorId,
+      },
+    });
+  }
+
+  async updatePublishedStatus(id, published) {
+    await Post.update({ published }, { where: { id } });
+
+    return this.findById(id);
+  }
+
   async findPublishedPosts() {
     return Post.findAll({
       where: { published: true },

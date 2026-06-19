@@ -106,6 +106,37 @@ class PostService {
       updatedAt: post.updatedAt,
     };
   }
+
+  async updatePublishedStatus(postId, currentUser, published) {
+    let post;
+
+    if (currentUser.role === "director") {
+      post = await PostRepository.findById(postId);
+    } else if (currentUser.role === "editor") {
+      post = await PostRepository.findByIdAndAuthor(postId, currentUser.id);
+    } else {
+      throw new AppError("Forbidden.", 403);
+    }
+
+    if (!post) {
+      throw new AppError("Post not found.", 404);
+    }
+
+    const updatedPost = await PostRepository.updatePublishedStatus(
+      postId,
+      published,
+    );
+
+    return {
+      id: updatedPost.id,
+      title: updatedPost.title,
+      content: updatedPost.content,
+      authorId: updatedPost.authorId,
+      published: updatedPost.published,
+      createdAt: updatedPost.createdAt,
+      updatedAt: updatedPost.updatedAt,
+    };
+  }
 }
 
 export default new PostService();

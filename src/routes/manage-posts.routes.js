@@ -19,4 +19,17 @@ router.get(
   PostController.findUnpublishedPostById,
 );
 
+router.patch(
+  "/:id/publish",
+  authMiddleware,
+  checkRoleMiddleware(["editor", "director"]),
+  PostController.updatePublishedStatus(true),
+);
+router.patch(
+  "/:id/unpublish",
+  authMiddleware,
+  checkRoleMiddleware(["editor", "director"]),
+  PostController.updatePublishedStatus(false),
+);
+
 export default router;
