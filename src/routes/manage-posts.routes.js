@@ -12,4 +12,11 @@ router.get(
   PostController.findUnpublishedPosts,
 );
 
+router.get(
+  "/:id",
+  authMiddleware,
+  checkRoleMiddleware(["editor", "director"]),
+  PostController.findUnpublishedPostById,
+);
+
 export default router;

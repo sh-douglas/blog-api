@@ -77,6 +77,35 @@ class PostService {
       updatedAt: post.updatedAt,
     }));
   }
+
+  async findUnpublishedPostById(id, currentUser) {
+    let post;
+
+    if (currentUser.role === "director") {
+      post = await PostRepository.findUnpublishedPostById(id);
+    } else if (currentUser.role === "editor") {
+      post = await PostRepository.findUnpublishedPostByIdAndAuthor(
+        id,
+        currentUser.id,
+      );
+    } else {
+      throw new AppError("Forbidden.", 403);
+    }
+
+    if (!post) {
+      throw new AppError("Post not found.", 404);
+    }
+
+    return {
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      authorId: post.authorId,
+      published: post.published,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+    };
+  }
 }
 
 export default new PostService();

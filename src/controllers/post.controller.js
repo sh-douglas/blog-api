@@ -40,6 +40,19 @@ class PostController {
       next(error);
     }
   }
+
+  async findUnpublishedPostById(req, res, next) {
+    try {
+      const post = await PostService.findUnpublishedPostById(
+        req.params.id,
+        req.user,
+      );
+
+      return res.status(200).json(post);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new PostController();
