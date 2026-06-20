@@ -16,29 +16,15 @@ class PostService {
     };
 
     const newPost = await PostRepository.create(postData);
+    const post = await PostRepository.findById(newPost.id);
 
-    return {
-      id: newPost.id,
-      title: newPost.title,
-      content: newPost.content,
-      authorId: newPost.authorId,
-      published: newPost.published,
-      createdAt: newPost.createdAt,
-    };
+    return this.formatPostResponse(post);
   }
 
   async findPublishedPosts() {
     const posts = await PostRepository.findPublishedPosts();
 
-    return posts.map((post) => ({
-      id: post.id,
-      title: post.title,
-      content: post.content,
-      authorId: post.authorId,
-      published: post.published,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
-    }));
+    return posts.map((post) => this.formatPostResponse(post));
   }
 
   async findPublishedPostById(id) {
@@ -48,15 +34,7 @@ class PostService {
       throw new AppError("Post not found.", 404);
     }
 
-    return {
-      id: post.id,
-      title: post.title,
-      content: post.content,
-      authorId: post.authorId,
-      published: post.published,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
-    };
+    return this.formatPostResponse(post);
   }
 
   async findUnpublishedPosts(currentUser) {
@@ -70,15 +48,7 @@ class PostService {
       throw new AppError("Forbidden.", 403);
     }
 
-    return posts.map((post) => ({
-      id: post.id,
-      title: post.title,
-      content: post.content,
-      authorId: post.authorId,
-      published: post.published,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
-    }));
+    return posts.map((post) => this.formatPostResponse(post));
   }
 
   async findUnpublishedPostById(id, currentUser) {
@@ -99,15 +69,7 @@ class PostService {
       throw new AppError("Post not found.", 404);
     }
 
-    return {
-      id: post.id,
-      title: post.title,
-      content: post.content,
-      authorId: post.authorId,
-      published: post.published,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
-    };
+    return this.formatPostResponse(post);
   }
 
   async updatePublishedStatus(postId, currentUser, published) {
@@ -130,15 +92,7 @@ class PostService {
       published,
     );
 
-    return {
-      id: updatedPost.id,
-      title: updatedPost.title,
-      content: updatedPost.content,
-      authorId: updatedPost.authorId,
-      published: updatedPost.published,
-      createdAt: updatedPost.createdAt,
-      updatedAt: updatedPost.updatedAt,
-    };
+    return this.formatPostResponse(updatedPost);
   }
 
   async updatePost(postId, currentUser, data) {
@@ -159,15 +113,7 @@ class PostService {
 
     const updatedPost = await PostRepository.updatePost(postId, cleanData);
 
-    return {
-      id: updatedPost.id,
-      title: updatedPost.title,
-      content: updatedPost.content,
-      authorId: updatedPost.authorId,
-      published: updatedPost.published,
-      createdAt: updatedPost.createdAt,
-      updatedAt: updatedPost.updatedAt,
-    };
+    return this.formatPostResponse(updatedPost);
   }
 
   async deletePost(postId, currentUser) {
@@ -187,6 +133,21 @@ class PostService {
     await PostRepository.deletePost(postId);
 
     return { message: "Post deleted successfully." };
+  }
+
+  formatPostResponse(post) {
+    return {
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      author: {
+        id: post.author.id,
+        name: post.author.name,
+      },
+      published: post.published,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+    };
   }
 }
 
