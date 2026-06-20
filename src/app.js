@@ -6,7 +6,7 @@ import globalErrorHandler from "./middlewares/global-error.middleware.js";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
-import manageRoutes from "./routes/manage-posts.routes.js";
+import manageRoutes from "./routes/manage-post.routes.js";
 
 const app = express();
 
