@@ -25,11 +25,26 @@ router.patch(
   checkRoleMiddleware(["editor", "director"]),
   PostController.updatePublishedStatus(true),
 );
+
 router.patch(
   "/:id/unpublish",
   authMiddleware,
   checkRoleMiddleware(["editor", "director"]),
   PostController.updatePublishedStatus(false),
+);
+
+router.patch(
+  "/:id",
+  authMiddleware,
+  checkRoleMiddleware(["editor", "director"]),
+  PostController.updatePost,
+);
+
+router.delete(
+  "/:id",
+  authMiddleware,
+  checkRoleMiddleware(["editor", "director"]),
+  PostController.deletePost,
 );
 
 export default router;

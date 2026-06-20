@@ -1,6 +1,9 @@
 import PostRepository from "../repositories/post.repository.js";
 import AppError from "../utils/AppError.js";
-import { createPostSchema } from "../validators/post.validator.js";
+import {
+  createPostSchema,
+  updatePostSchema,
+} from "../validators/post.validator.js";
 
 class PostService {
   async create(data, authorId) {
@@ -136,6 +139,54 @@ class PostService {
       createdAt: updatedPost.createdAt,
       updatedAt: updatedPost.updatedAt,
     };
+  }
+
+  async updatePost(postId, currentUser, data) {
+    let post;
+    const cleanData = updatePostSchema.parse(data);
+
+    if (currentUser.role === "director") {
+      post = await PostRepository.findById(postId);
+    } else if (currentUser.role === "editor") {
+      post = await PostRepository.findByIdAndAuthor(postId, currentUser.id);
+    } else {
+      throw new AppError("Forbidden.", 403);
+    }
+
+    if (!post) {
+      throw new AppError("Post not found.", 404);
+    }
+
+    const updatedPost = await PostRepository.updatePost(postId, cleanData);
+
+    return {
+      id: updatedPost.id,
+      title: updatedPost.title,
+      content: updatedPost.content,
+      authorId: updatedPost.authorId,
+      published: updatedPost.published,
+      createdAt: updatedPost.createdAt,
+      updatedAt: updatedPost.updatedAt,
+    };
+  }
+
+  async deletePost(postId, currentUser) {
+    let post;
+    if (currentUser.role === "director") {
+      post = await PostRepository.findById(postId);
+    } else if (currentUser.role === "editor") {
+      post = await PostRepository.findByIdAndAuthor(postId, currentUser.id);
+    } else {
+      throw new AppError("Forbidden.", 403);
+    }
+
+    if (!post) {
+      throw new AppError("Post not found.", 404);
+    }
+
+    await PostRepository.deletePost(postId);
+
+    return { message: "Post deleted successfully." };
   }
 }
 

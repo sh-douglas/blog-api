@@ -75,6 +75,16 @@ class PostRepository {
       },
     });
   }
+
+  async updatePost(id, data) {
+    await Post.update(data, { where: { id } });
+
+    return this.findById(id);
+  }
+
+  async deletePost(id) {
+    return Post.destroy({ where: { id } });
+  }
 }
 
 export default new PostRepository();

@@ -69,6 +69,33 @@ class PostController {
       }
     };
   }
+
+  async updatePost(req, res, next) {
+    try {
+      const updatedPost = await PostService.updatePost(
+        req.params.id,
+        req.user,
+        req.body,
+      );
+
+      return res.status(200).json(updatedPost);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deletePost(req, res, next) {
+    try {
+      const { id } = req.params;
+      const user = req.user;
+
+      const deletedPost = await PostService.deletePost(id, user);
+
+      return res.status(200).json(deletedPost);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new PostController();
