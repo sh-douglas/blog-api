@@ -51,6 +51,20 @@ class PostService {
     return posts.map((post) => this.formatPostResponse(post));
   }
 
+  async findManagedPublishedPosts(currentUser) {
+    let posts;
+
+    if (currentUser.role === "director") {
+      posts = await PostRepository.findPublishedPosts();
+    } else if (currentUser.role === "editor") {
+      posts = await PostRepository.findPublishedPostsByAuthor(currentUser.id);
+    } else {
+      throw new AppError("Forbidden.", 403);
+    }
+
+    return posts.map((post) => this.formatPostResponse(post));
+  }
+
   async findUnpublishedPostById(id, currentUser) {
     let post;
 

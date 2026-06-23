@@ -13,24 +13,17 @@ router.get(
 );
 
 router.get(
+  "/published",
+  authMiddleware,
+  checkRoleMiddleware(["editor", "director"]),
+  PostController.findManagedPublishedPosts,
+);
+
+router.get(
   "/:id",
   authMiddleware,
   checkRoleMiddleware(["editor", "director"]),
   PostController.findUnpublishedPostById,
-);
-
-router.patch(
-  "/:id/publish",
-  authMiddleware,
-  checkRoleMiddleware(["editor", "director"]),
-  PostController.updatePublishedStatus(true),
-);
-
-router.patch(
-  "/:id/unpublish",
-  authMiddleware,
-  checkRoleMiddleware(["editor", "director"]),
-  PostController.updatePublishedStatus(false),
 );
 
 router.patch(
@@ -45,6 +38,20 @@ router.delete(
   authMiddleware,
   checkRoleMiddleware(["editor", "director"]),
   PostController.deletePost,
+);
+
+router.patch(
+  "/:id/publish",
+  authMiddleware,
+  checkRoleMiddleware(["editor", "director"]),
+  PostController.updatePublishedStatus(true),
+);
+
+router.patch(
+  "/:id/unpublish",
+  authMiddleware,
+  checkRoleMiddleware(["editor", "director"]),
+  PostController.updatePublishedStatus(false),
 );
 
 export default router;

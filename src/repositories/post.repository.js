@@ -62,6 +62,21 @@ class PostRepository {
     });
   }
 
+  async findPublishedPostsByAuthor(authorId) {
+    return Post.findAll({
+      where: {
+        published: true,
+        authorId,
+      },
+      order: [["createdAt", "DESC"]],
+      include: {
+        model: User,
+        as: "author",
+        attributes: ["id", "name"],
+      },
+    });
+  }
+
   async findPublishedPostById(id) {
     return Post.findOne({
       where: {

@@ -96,6 +96,18 @@ class PostController {
       next(error);
     }
   }
+
+  async findManagedPublishedPosts(req, res, next) {
+    try {
+      const publishedPosts = await PostService.findManagedPublishedPosts(
+        req.user,
+      );
+
+      return res.status(200).json(publishedPosts);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new PostController();
