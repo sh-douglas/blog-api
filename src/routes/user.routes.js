@@ -12,5 +12,11 @@ router.patch(
   checkRoleMiddleware(["director"]),
   UserController.updateUserRole,
 );
+router.get(
+  "/",
+  authMiddleware,
+  checkRoleMiddleware(["director"]),
+  UserController.findAllUsers,
+);
 
 export default router;

@@ -24,6 +24,16 @@ class UserController {
       next(error);
     }
   }
+
+  async findAllUsers(req, res, next) {
+    try {
+      const users = await UserService.findAllUsers(req.user);
+
+      return res.status(200).json(users);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new UserController();

@@ -36,6 +36,18 @@ class UserService {
       role: updatedUser.role,
     };
   }
+
+  async findAllUsers(currentUser) {
+    let users;
+
+    if (currentUser.role === "director") {
+      users = await UserRepository.findAllUsers();
+    } else {
+      throw new AppError("Forbidden.", 403);
+    }
+
+    return users;
+  }
 }
 
 export default new UserService();

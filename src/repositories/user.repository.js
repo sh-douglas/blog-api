@@ -1,3 +1,5 @@
+import { Op } from "sequelize";
+
 import { User } from "../models/index.js";
 
 class UserRepository {
@@ -17,6 +19,18 @@ class UserRepository {
     await User.update({ role: role }, { where: { id: userId } });
 
     return this.findById(userId);
+  }
+
+  async findAllUsers() {
+    return User.findAll({
+      attributes: ["id", "name", "email", "role"],
+      order: [["name", "ASC"]],
+      where: {
+        role: {
+          [Op.ne]: "director",
+        },
+      },
+    });
   }
 }
 
